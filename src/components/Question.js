@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
+import { Col, Row } from 'react-bootstrap'
 
 const Question = ({
   question,
@@ -29,12 +30,12 @@ const Question = ({
   return (
     <Card style={{ width: '180rem' }}>
       <Card.Body>
-        <div className='d-flex justify-content-between'>
-          <Badge bg='dark' className='text-white mb-2'>
+        <div className='d-md-flex justify-content-between'>
+          <Badge bg='dark' className='text-white mb-3'>
             Question : {index}
           </Badge>
 
-          <Card.Subtitle>
+          <Card.Subtitle className='mb-3'>
             Category : {decodeURIComponent(question.category)}
           </Card.Subtitle>
         </div>
@@ -49,56 +50,56 @@ const Question = ({
             : '⭐'.repeat(1) + '★★'}
         </Card.Subtitle>
         <Card.Text>
-          {choices.map((choice, index) => (
-            <div className='p-2 d-flex justify-content-start' key={index}>
-              <input
-                type='radio'
-                name='answer'
-                className='me-2'
-                value={choice}
-                checked={selectedAnswer === choice}
-                onChange={handleChoiceChange}
-                disabled={attempted}
-              />{' '}
-              {decodeURIComponent(choice)}
-            </div>
-          ))}
+          <Row>
+            <Col md={6}>
+              {choices.map((choice, index) => (
+                <div className='p-2 d-flex justify-content-start' key={index}>
+                  <input
+                    type='radio'
+                    name='answer'
+                    className='me-2'
+                    value={choice}
+                    checked={selectedAnswer === choice}
+                    onChange={handleChoiceChange}
+                    disabled={attempted}
+                  />{' '}
+                  {decodeURIComponent(choice)}
+                </div>
+              ))}
+            </Col>
+            <Col
+              md={6}
+              className='d-flex align-items-center justify-content-center'
+            >
+              {correctAnswer === 'Correct' ? (
+                <h2>
+                  <Badge bg='success'>Correct!</Badge>
+                </h2>
+              ) : correctAnswer === 'Incorrect' ? (
+                <h2>
+                  {' '}
+                  <Badge bg='danger'>Incorrect!</Badge>{' '}
+                </h2>
+              ) : (
+                <></>
+              )}
+            </Col>
+          </Row>
         </Card.Text>
-        <div className='d-flex justify-content-around'>
-          <div>
-            {showNext ? (
-              <Button
-                variant='dark'
-                className='rounded-pill'
-                onClick={nextQuestion}
-              >
-                Next Question
-              </Button>
-            ) : (
-              <Button
-                variant='success'
-                className='rounded-pill'
-                onClick={check}
-              >
-                Submit
-              </Button>
-            )}
-          </div>
-          <div>
-            {correctAnswer === 'Correct' ? (
-              <h3>
-                <Badge bg='success'>Correct!</Badge>
-              </h3>
-            ) : correctAnswer === 'Incorrect' ? (
-              <h3>
-                {' '}
-                <Badge bg='danger'>Incorrect!</Badge>{' '}
-              </h3>
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
+
+        {showNext ? (
+          <Button
+            variant='dark'
+            className='rounded-pill'
+            onClick={nextQuestion}
+          >
+            Next Question
+          </Button>
+        ) : (
+          <Button variant='success' className='rounded-pill' onClick={check}>
+            Submit
+          </Button>
+        )}
       </Card.Body>
     </Card>
   )
